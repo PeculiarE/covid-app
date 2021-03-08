@@ -1,6 +1,6 @@
 <template>
   <div class="mt-5 mb-5">
-    <h1>Breakdown Per Region</h1>
+    <h3>Breakdown Per Region</h3>
     <table class="table table-bordered">
       <thead>
         <tr>

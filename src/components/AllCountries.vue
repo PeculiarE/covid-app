@@ -1,5 +1,6 @@
 <template>
   <div class="mt-5">
+    <h3>List of All Countries</h3>
     <table class="table table-bordered">
       <thead>
         <tr>

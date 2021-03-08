@@ -1,6 +1,6 @@
 <template>
   <div class="mt-5 mb-5">
-    <h1>Top 3 Affected Countries</h1>
+    <h3>Top 3 Affected Countries</h3>
     <table class="table table-bordered">
       <thead>
         <tr>
