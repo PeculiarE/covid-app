@@ -1,12 +1,14 @@
 <template>
   <div class="home">
     <form @submit.prevent="retrieveSearchResult(searchItem)">
-      <input type="text" placeholder="Search" v-model="searchItem">
+      <input type="text" placeholder="Search" v-model.lazy.trim="searchItem">
     </form>
     <div v-if="getDisplaySearchResult">
       {{searchItem}}
       {{getSearchResult.confirmed}}
-       {{getSearchResult.recovered}}
+      {{getSearchResult.recovered}}
+      {{getSearchResult.deaths}}
+      {{getSearchResult.activeCases}}
     </div>
     <div v-else>
       <div>
