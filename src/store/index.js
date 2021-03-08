@@ -77,7 +77,7 @@ export default new Vuex.Store({
       });
     },
     updateSearchResult(state, payload) {
-      state.searchResult = payload.All;
+      state.searchResult = payload;
     },
     updateDisplaySearchResult(state) {
       state.displaySearchResult = true;
@@ -155,7 +155,12 @@ export default new Vuex.Store({
         .get(`https://covid-api.mmediagroup.fr/v1/cases?country=${payload}`)
         .then(({ data }) => {
           console.log(data);
-          context.commit('updateSearchResult', data);
+          const active = data.All.confirmed - (data.All.recovered + data.All.deaths);
+          const subData = {
+            activeCases: active,
+            ...data.All,
+          };
+          context.commit('updateSearchResult', subData);
           context.commit('updateDisplaySearchResult');
         })
         .catch((error) => {

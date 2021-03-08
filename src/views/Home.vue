@@ -1,11 +1,14 @@
 <template>
   <div class="home">
     <form @submit.prevent="retrieveSearchResult(searchItem)">
-      <input type="text" placeholder="Search" v-model="searchItem">
+      <input type="text" placeholder="Search" v-model.lazy.trim="searchItem">
     </form>
     <div v-if="getDisplaySearchResult">
       {{searchItem}}
       {{getSearchResult.confirmed}}
+      {{getSearchResult.recovered}}
+      {{getSearchResult.deaths}}
+      {{getSearchResult.activeCases}}
     </div>
     <div v-else>
       <div>
@@ -98,7 +101,7 @@ export default {
     //   .get('/cases')
     //   .then(({ data }) => {
     //     console.log(data.Global.All);
-    //     const Active = data.Global.All.confirmed
+    //     const Active = dgit ata.Global.All.confirmed
     // - data.Global.All.recovered - data.Global.All.deaths;
     //     console.log(Active);
     //   })
