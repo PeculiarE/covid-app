@@ -97,18 +97,6 @@ export default {
       'getDisplaySearchResult']),
   },
   mounted() {
-    // this.$axios
-    //   .get('/cases')
-    //   .then(({ data }) => {
-    //     console.log(data.Global.All);
-    //     const Active = dgit ata.Global.All.confirmed
-    // - data.Global.All.recovered - data.Global.All.deaths;
-    //     console.log(Active);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.response.data);
-    //   })
-    //   .finally(() => {});
     this.$store.dispatch('retrieveWorldWideCases');
     this.$store.dispatch('retrieveTopThreeCountries');
     this.$store.dispatch('retrieveCasesPerRegion');
