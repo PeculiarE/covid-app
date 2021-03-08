@@ -1,74 +1,36 @@
 <template>
   <div class="home">
-    <form @submit.prevent="retrieveSearchResult(searchItem)">
-      <input type="text" placeholder="Search" v-model="searchItem">
-    </form>
-    <div v-if="getDisplaySearchResult">
-      {{searchItem}}
-      {{getSearchResult.confirmed}}
-       {{getSearchResult.recovered}}
+    <NavBar @receiveSearchItem="getSearchItem" />
+    <br>
+    <div v-if="getDisplaySearchResult"
+    class="card text-white bg-dark mb-3 border-dark" style="max-width: 18rem;">
+      <br>
+      <div class="card-body text-white bg-dark mb-3">
+        <h5 class="card-title"><b>{{searchItem}}</b></h5>
+        <hr>
+        <p class="card-text">
+          Located in {{getSearchResult.continent}}, {{searchItem}} has a population of roughly
+          {{getSearchResult.population}} people</p>
+      </div>
+      <ul class="list-group list-group-flush text-dark">
+        <li class="list-group-item">Capital: {{getSearchResult.capital_city}}</li>
+        <li class="list-group-item">Total Confirmed Cases: {{getSearchResult.confirmed}}</li>
+        <li class="list-group-item">Total Recovered Cases: {{getSearchResult.recovered}}</li>
+        <li class="list-group-item">Total Deaths: {{getSearchResult.deaths}}</li>
+        <li class="list-group-item">Total Active Cases: {{getSearchResult.activeCases}}</li>
+      </ul>
     </div>
     <div v-else>
       <div>
-        <h1>Total Cases WorldWide: {{getWorldWideCases.confirmed}}</h1>
-        <h1>Total Recoveries WorldWide: {{getWorldWideCases.recovered}}</h1>
-        <h1>Total Deaths WorldWide: {{getWorldWideCases.deaths}}</h1>
-        <h1>Active Cases WorldWide: {{getWorldWideCases.active}}</h1>
+        <h1>Total Cases Worldwide: {{getWorldWideCases.confirmed}}</h1>
+        <h1>Total Recoveries Worldwide: {{getWorldWideCases.recovered}}</h1>
+        <h1>Total Deaths Worldwide: {{getWorldWideCases.deaths}}</h1>
+        <h1>Active Cases Worldwide: {{getWorldWideCases.active}}</h1>
       </div>
       <div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th v-for="(country, index) in getTopThreeCountries" :key="index">{{country.id}}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td v-for="(country, index) in getTopThreeCountries"
-              :key="index">{{country.number}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Region</th>
-              <th>Total Number of Cases</th>
-            </tr>
-          </thead>
-          <tbody>
-              <tr v-for="(value, index) in getCasesPerRegion" :key="index">
-                <td>{{ value.region }}</td>
-                <td>{{ value.cases }}</td>
-              </tr>
-            </tbody>
-        </table>
-      </div>
-      <div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>S/N</th>
-              <th>Country</th>
-              <th>Total Confirmed Cases</th>
-              <th>Total Recoveries</th>
-              <th>Total Deaths</th>
-              <th>Total Active Cases</th>
-            </tr>
-          </thead>
-          <tbody>
-              <tr v-for="(value, index) in getAllTheCountries" :key="index">
-                <td>{{ index + 1 }}</td>
-                <td>{{ value.id }}</td>
-                <td>{{ value.confirmed }}</td>
-                <td>{{ value.recovered }}</td>
-                <td>{{ value.deaths }}</td>
-                <td>{{ value.active }}</td>
-              </tr>
-            </tbody>
-        </table>
+        <TopThree />
+        <Regions />
+        <AllCountries />
       </div>
     </div>
   </div>
@@ -76,7 +38,11 @@
 
 <script>
 // @ is an alias to /src
-import { mapGetters, mapActions } from 'vuex';
+import NavBar from '@/components/NavBar.vue';
+import TopThree from '@/components/TopThree.vue';
+import Regions from '@/components/Regions.vue';
+import AllCountries from '@/components/AllCountries.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Home',
@@ -85,23 +51,34 @@ export default {
       searchItem: '',
     };
   },
-  components: {},
+  components: {
+    NavBar,
+    TopThree,
+    Regions,
+    AllCountries,
+  },
   computed: {
     ...mapGetters(['getWorldWideCases',
-      'getTopThreeCountries',
-      'getCasesPerRegion',
-      'getAllTheCountries',
       'getSearchResult',
       'getDisplaySearchResult']),
   },
   mounted() {
     this.$store.dispatch('retrieveWorldWideCases');
-    this.$store.dispatch('retrieveTopThreeCountries');
-    this.$store.dispatch('retrieveCasesPerRegion');
-    this.$store.dispatch('retrieveAllTheCountries');
   },
   methods: {
-    ...mapActions(['retrieveSearchResult']),
+    getSearchItem(value) {
+      this.searchItem = value;
+    },
   },
 };
 </script>
+
+<style scoped>
+.home {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0px 100px;
+  box-sizing: border-box;
+}
+</style>

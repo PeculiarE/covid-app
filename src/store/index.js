@@ -48,10 +48,11 @@ export default new Vuex.Store({
   },
   mutations: {
     updateWorldWideCases(state, payload) {
-      state.worldWideCases.confirmed = payload.confirmed;
-      state.worldWideCases.recovered = payload.recovered;
-      state.worldWideCases.deaths = payload.deaths;
-      state.worldWideCases.active = (payload.confirmed - (payload.recovered + payload.deaths));
+      state.worldWideCases.confirmed = payload.confirmed.toLocaleString();
+      state.worldWideCases.recovered = payload.recovered.toLocaleString();
+      state.worldWideCases.deaths = payload.deaths.toLocaleString();
+      state.worldWideCases.active = (payload.confirmed - (payload.recovered + payload.deaths))
+        .toLocaleString();
     },
     updateTopThreeCountries(state, payload) {
       payload.forEach((el, index) => {
@@ -77,7 +78,7 @@ export default new Vuex.Store({
       });
     },
     updateSearchResult(state, payload) {
-      state.searchResult = payload.All;
+      state.searchResult = payload;
     },
     updateDisplaySearchResult(state) {
       state.displaySearchResult = true;
@@ -155,8 +156,14 @@ export default new Vuex.Store({
         .get(`https://covid-api.mmediagroup.fr/v1/cases?country=${payload}`)
         .then(({ data }) => {
           console.log(data);
-          context.commit('updateSearchResult', data);
+          const active = data.All.confirmed - (data.All.recovered + data.All.deaths);
+          let subData = {
+            activeCases: active,
+            ...data.All,
+          };
+          context.commit('updateSearchResult', subData);
           context.commit('updateDisplaySearchResult');
+          subData = {};
         })
         .catch((error) => {
           console.log(error.response.data);
