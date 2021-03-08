@@ -6,6 +6,7 @@
     <div v-if="getDisplaySearchResult">
       {{searchItem}}
       {{getSearchResult.confirmed}}
+       {{getSearchResult.recovered}}
     </div>
     <div v-else>
       <div>
@@ -94,18 +95,6 @@ export default {
       'getDisplaySearchResult']),
   },
   mounted() {
-    // this.$axios
-    //   .get('/cases')
-    //   .then(({ data }) => {
-    //     console.log(data.Global.All);
-    //     const Active = data.Global.All.confirmed
-    // - data.Global.All.recovered - data.Global.All.deaths;
-    //     console.log(Active);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.response.data);
-    //   })
-    //   .finally(() => {});
     this.$store.dispatch('retrieveWorldWideCases');
     this.$store.dispatch('retrieveTopThreeCountries');
     this.$store.dispatch('retrieveCasesPerRegion');
